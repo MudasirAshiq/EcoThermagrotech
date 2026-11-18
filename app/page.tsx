@@ -1,11 +1,136 @@
 'use client';
 
-import { Leaf, Flame, TreePine, Droplets, Sun, Recycle, Users, Sprout, ShieldCheck, Factory, Home, Landmark, Zap, Cloud, Timer, Phone, MessageCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Leaf, Flame, TreePine, Droplets, Sun, Recycle, Users, Sprout, ShieldCheck, Factory, Home, Landmark, Zap, Cloud, Timer, Phone, MessageCircle, MapPin, Linkedin, CheckCircle2, X, Package, Box, Layers, ArrowRight, Quote } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
+
+interface SolutionItem {
+  id: string;
+  title: string;
+  description: string;
+  previewFeatures: string[];
+  moreFeaturesCount: number;
+  allFeatures: string[];
+  icon: React.ReactNode;
+}
+
+const sustainableSolutions: SolutionItem[] = [
+  {
+    id: 'premium-wood-pellets',
+    title: 'Premium Wood Pellets',
+    description: 'High-density biomass fuel pellets designed for maximum efficiency in domestic heating systems and pellet stoves.',
+    previewFeatures: [
+      'High Calorific Value (4800+ kcal/kg)',
+      'Low Ash Content (<1%)',
+    ],
+    moreFeaturesCount: 2,
+    allFeatures: [
+      'High Calorific Value (4800+ kcal/kg)',
+      'Low Ash Content (<1%)',
+      'Zero Chemical Additives & 100% Pure Biomass',
+      'Standardized 6-8mm Pellet Diameter & Consistent Flow',
+      'Low Moisture Content (<8%) for High Efficiency',
+    ],
+    icon: <Package className="h-5 w-5" />,
+  },
+  {
+    id: 'industrial-bio-fuel',
+    title: 'Industrial Bio-Fuel',
+    description: 'Sustainable thermal energy solutions for factories, brick kilns, and large-scale heating plants in the industrial sector.',
+    previewFeatures: [
+      'Cost Effective vs Coal',
+      'Consistent Burn Rate',
+    ],
+    moreFeaturesCount: 2,
+    allFeatures: [
+      'Cost Effective vs Coal',
+      'Consistent Burn Rate',
+      'Eco-Compliant Emissions',
+      'Bulk Delivery Available',
+    ],
+    icon: <Box className="h-5 w-5" />,
+  },
+  {
+    id: 'sawdust-supply-chain',
+    title: 'Sawdust Supply Chain',
+    description: 'A community-driven collection model that transforms timber waste into wealth for local families and mill owners.',
+    previewFeatures: [
+      'Zero Waste Initiative',
+      'Local Sourcing',
+    ],
+    moreFeaturesCount: 2,
+    allFeatures: [
+      'Zero Waste Initiative',
+      'Local Sourcing & Fair Value',
+      'Direct Economic Benefit for Sawmills & Families',
+      'Decentralized Biomass Collection Network',
+    ],
+    icon: <Recycle className="h-5 w-5" />,
+  },
+  {
+    id: 'eco-briquettes',
+    title: 'Eco-Briquettes',
+    description: 'Large compressed biomass blocks ideal for traditional fireplaces and open hearths, providing long-lasting warmth.',
+    previewFeatures: [
+      'Slow Burn Technology',
+      'Easy Storage',
+    ],
+    moreFeaturesCount: 2,
+    allFeatures: [
+      'Slow Burn Technology',
+      'Easy Storage & Stackable',
+      'High Energy Density & Steady Heat',
+      'Minimal Smoke & Low Ash Residue',
+    ],
+    icon: <Layers className="h-5 w-5" />,
+  },
+];
+
+const circularSteps = [
+  {
+    id: 'step-1',
+    title: 'Wood Waste Collection',
+    description: 'Recovering sawdust and timber waste from local mills across the region.',
+    icon: <Recycle className="h-6 w-6" />,
+  },
+  {
+    id: 'step-2',
+    title: 'Sustainable Processing',
+    description: 'Converting raw biomass into high-density, low-moisture pellets.',
+    icon: <Factory className="h-6 w-6" />,
+  },
+  {
+    id: 'step-3',
+    title: 'Clean Energy Delivery',
+    description: 'Providing efficient, low-smoke fuel for households and industrial units.',
+    icon: <Flame className="h-6 w-6" />,
+  },
+  {
+    id: 'step-4',
+    title: 'Community Impact',
+    description: 'Creating green jobs and reducing the environmental footprint of heating.',
+    icon: <Users className="h-6 w-6" />,
+  },
+];
 
 export default function Page() {
+  const [selectedSolution, setSelectedSolution] = useState<SolutionItem | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedSolution(null);
+    };
+    if (selectedSolution) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedSolution]);
   return (
     <div className="min-h-screen bg-stone-50 text-stone-900 font-sans">
       {/* Header */}
@@ -43,34 +168,30 @@ export default function Page() {
           transition={{ duration: 0.8 }}
           className="relative pt-24 pb-32 overflow-hidden"
         >
-          <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 z-0 overflow-hidden">
             <Image
-              src="https://picsum.photos/seed/forest-biomass/1920/1080?blur=2"
-              alt="Forest background"
+              src="/images/hero-bg.jpg"
+              alt="Scottish Highlands forest and sustainable biomass energy landscape"
               fill
-              className="object-cover opacity-20"
-              referrerPolicy="no-referrer"
+              priority
+              className="object-cover opacity-80"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-stone-50/80 via-stone-50/95 to-stone-50"></div>
+            {/* Center soft highlight for crisp text legibility without washing out forest */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(250,250,249,0.85)_0%,_rgba(250,250,249,0.4)_50%,_rgba(250,250,249,0.1)_100%)]"></div>
+            {/* Smooth transition into next section */}
+            <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-stone-50 to-transparent"></div>
           </div>
           
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-sm font-medium mb-8">
-              <Sprout className="h-4 w-4" />
-              <span>Edinburgh-based Social Enterprise</span>
-            </div>
             <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-stone-900 mb-6 max-w-4xl mx-auto leading-tight">
               Sustainable Fuel for <br className="hidden md:block" />
               <span className="text-emerald-600">Scotland&apos;s Future</span>
             </h1>
             <p className="text-xl text-stone-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Producing wooden pellets from bio crops to support growing energy requirements, combat rural fuel poverty, and drive the transition to Net-Zero 2045.
+              Producing wooden pellets from woodwaste to support growing energy requirements, combat rural fuel poverty, and drive the transition to Net-Zero 2045.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#solution" className="bg-emerald-600 text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-600/20">
-                Discover Our Bio Crop
-              </a>
-              <a href="#about" className="bg-white text-stone-800 border border-stone-200 px-8 py-4 rounded-full text-lg font-medium hover:bg-stone-50 transition-all">
+            <div className="flex justify-center">
+              <a href="#about" className="bg-emerald-600 text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-600/20">
                 Learn More
               </a>
             </div>
@@ -90,10 +211,10 @@ export default function Page() {
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl font-bold text-stone-900 mb-6">Who We Are & What We Do</h2>
               <p className="text-lg text-stone-600 mb-6 leading-relaxed">
-                Ecotherm Agrotech is a pre-trading social enterprise based in Edinburgh. We seek to produce wooden pellets from bio crops as a sustainable fuel to support the growing energy requirements in Scotland.
+                Ecotherm Agrotech is a pre-trading social venture based in Scotland. We seek to produce wooden pellets from existing wood waste as a sustainable fuel to support the growing energy requirements in Scotland.
               </p>
               <p className="text-lg text-stone-600 mb-8 leading-relaxed">
-                Our inspiration comes from the co-existing dearth and opportunity in the energy market today. We aim to programme our bio crop for regenerative bioenergy and circular forestry, building a business model on agroforestry and a community-owned biomass value chain.
+                Our existing wood waste can be channelized to build a participatory model to include local communities in producing renewable bioenergy.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
                 <div className="border-l-4 border-emerald-500 pl-4">
@@ -166,140 +287,147 @@ export default function Page() {
           </div>
         </motion.section>
 
-        {/* Solution Section */}
+        {/* Sustainable Solutions Section */}
         <motion.section 
           id="solution" 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="py-24 bg-emerald-50"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div className="order-2 lg:order-1 grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <div className="bg-white p-6 rounded-2xl shadow-sm border border-emerald-100">
-                    <Cloud className="h-8 w-8 text-emerald-600 mb-4" />
-                    <h4 className="font-bold text-stone-900 mb-2">10x Carbon Sequestration</h4>
-                    <p className="text-sm text-stone-600">Exceptional carbon capture compared to traditional forestry.</p>
-                  </div>
-                  <div className="bg-white p-6 rounded-2xl shadow-sm border border-emerald-100">
-                    <Timer className="h-8 w-8 text-emerald-600 mb-4" />
-                    <h4 className="font-bold text-stone-900 mb-2">Fastest Growth</h4>
-                    <p className="text-sm text-stone-600">Ready for harvest in just 2-3 years among hardwood trees.</p>
-                  </div>
-                  <div className="bg-white p-6 rounded-2xl shadow-sm border border-emerald-100">
-                    <Droplets className="h-8 w-8 text-emerald-600 mb-4" />
-                    <h4 className="font-bold text-stone-900 mb-2">Arid Resilience</h4>
-                    <p className="text-sm text-stone-600">Ability to grow and thrive even in arid conditions.</p>
-                  </div>
-                </div>
-                <div className="space-y-4 mt-8">
-                  <div className="bg-white p-6 rounded-2xl shadow-sm border border-emerald-100">
-                    <Flame className="h-8 w-8 text-emerald-600 mb-4" />
-                    <h4 className="font-bold text-stone-900 mb-2">High Calorific Value</h4>
-                    <p className="text-sm text-stone-600">Low moisture content makes it perfect for biomass pellets.</p>
-                  </div>
-                  <div className="bg-white p-6 rounded-2xl shadow-sm border border-emerald-100">
-                    <Recycle className="h-8 w-8 text-emerald-600 mb-4" />
-                    <h4 className="font-bold text-stone-900 mb-2">6x Regrowth</h4>
-                    <p className="text-sm text-stone-600">Regrows from the same stump up to 6 times, promoting cost-effective forestry.</p>
-                  </div>
-                  <div className="bg-white p-6 rounded-2xl shadow-sm border border-emerald-100">
-                    <Sun className="h-8 w-8 text-emerald-600 mb-4" />
-                    <h4 className="font-bold text-stone-900 mb-2">Biodiversity Support</h4>
-                    <p className="text-sm text-stone-600">Supports local biodiversity and pollinators due to its flowers.</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="order-1 lg:order-2">
-                <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-6">Our Game-Changing Bio Crop</h2>
-                <p className="text-lg text-stone-600 mb-8 leading-relaxed">
-                  Our proposed bio crop for raw material is a revolutionary alternative to traditional forestry. It addresses the critical need for sustainable, locally-sourced biomass while actively regenerating the environment.
-                </p>
-                <div className="bg-emerald-600 text-white p-8 rounded-3xl">
-                  <h3 className="text-2xl font-bold mb-4">Intellectual Property</h3>
-                  <p className="mb-6 opacity-90">
-                    We are planning to apply for a trademark for Ecotherm Agrotech and a patent for our proprietary technology of producing wooden pellets from our chosen bio crop.
-                  </p>
-                  <div className="flex items-center gap-3 text-emerald-100">
-                    <ShieldCheck className="h-6 w-6" />
-                    <span className="font-medium">Protecting our unique, fast-growing supply chain.</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Products & Services */}
-        <motion.section 
-          id="products" 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="py-24 bg-white"
+          className="py-24 bg-stone-50"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-6">Products & Services</h2>
-              <p className="text-stone-600 text-lg">A sustainable and circular economy model establishing a multi-output production system.</p>
+              <span className="text-xs sm:text-sm font-bold tracking-[0.2em] text-emerald-600 uppercase mb-2 inline-block">
+                WHAT WE OFFER
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-stone-900 font-normal tracking-tight">
+                Sustainable Solutions
+              </h2>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="group relative overflow-hidden rounded-3xl bg-stone-100 p-8 hover:bg-emerald-50 transition-colors"
-              >
-                <div className="bg-white w-14 h-14 rounded-full flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">
-                  <Flame className="h-6 w-6 text-emerald-600" />
-                </div>
-                <h3 className="text-2xl font-bold text-stone-900 mb-4">Biomass Products</h3>
-                <p className="text-stone-600 leading-relaxed">
-                  High-quality biomass timber, lumbar, biomass chips, sustainable wooden pellets, and biochar.
-                </p>
-              </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {sustainableSolutions.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-white rounded-2xl p-7 border border-stone-200/80 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-stone-700 mb-5">
+                      {item.icon}
+                    </div>
+                    <h3 className="text-xl font-serif font-bold text-stone-900 mb-2.5">
+                      {item.title}
+                    </h3>
+                    <p className="text-stone-600 text-sm leading-relaxed mb-6">
+                      {item.description}
+                    </p>
+                    <div className="space-y-2 mb-6">
+                      {item.previewFeatures.map((feat, i) => (
+                        <div key={i} className="flex items-center gap-2 text-xs sm:text-sm text-stone-700">
+                          <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                          <span>{feat}</span>
+                        </div>
+                      ))}
+                      <span className="text-xs text-stone-400 font-medium pl-6 block">
+                        +{item.moreFeaturesCount} more features
+                      </span>
+                    </div>
+                  </div>
 
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="group relative overflow-hidden rounded-3xl bg-stone-100 p-8 hover:bg-emerald-50 transition-colors"
-              >
-                <div className="bg-white w-14 h-14 rounded-full flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">
-                  <Leaf className="h-6 w-6 text-emerald-600" />
-                </div>
-                <h3 className="text-2xl font-bold text-stone-900 mb-4">Carbon Credits</h3>
-                <p className="text-stone-600 leading-relaxed">
-                  Carbon sequestration credits offered to carbon offset buyers or CSR-driven companies.
-                </p>
-              </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="group relative overflow-hidden rounded-3xl bg-stone-100 p-8 hover:bg-emerald-50 transition-colors"
-              >
-                <div className="bg-white w-14 h-14 rounded-full flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">
-                  <Sprout className="h-6 w-6 text-emerald-600" />
-                </div>
-                <h3 className="text-2xl font-bold text-stone-900 mb-4">Agroforestry Services</h3>
-                <p className="text-stone-600 leading-relaxed">
-                  Regenerative services collaborating with local farmers for intercropping the bio crop with food crops.
-                </p>
-              </motion.div>
+                  <button
+                    onClick={() => setSelectedSolution(item)}
+                    className="w-full py-2.5 px-4 rounded-xl border border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white font-medium text-sm transition-colors text-center cursor-pointer mt-6"
+                  >
+                    Learn More
+                  </button>
+                </motion.div>
+              ))}
             </div>
           </div>
         </motion.section>
+
+        {/* Vision & Circular Economy Model Section */}
+        <section id="products">
+          {/* Our Vision */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="py-24 bg-white text-center"
+          >
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+              <span className="text-xs sm:text-sm font-bold tracking-[0.2em] text-emerald-600 uppercase mb-3 inline-block">
+                OUR VISION
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-stone-900 font-normal tracking-tight mb-8">
+                Sustainability Meets Innovation
+              </h2>
+              <div className="relative max-w-3xl mx-auto px-4 sm:px-8">
+                <p className="text-stone-600 text-base sm:text-lg lg:text-xl leading-relaxed italic">
+                  &ldquo;We envision a Scotland where natural resources power the future. By transforming wood waste into high-efficiency fuel, we create a circular economy that protects our forests while empowering local communities.&rdquo;
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Our Circular Economy Model */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="py-24 bg-[#062d20] text-white relative overflow-hidden"
+          >
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white font-normal tracking-tight mb-4">
+                  Our Circular Economy Model
+                </h2>
+                <p className="text-emerald-200/80 text-sm sm:text-base leading-relaxed">
+                  We close the loop on waste, turning a local environmental hazard into a valuable energy resource.
+                </p>
+              </div>
+
+              {/* 4 Steps Grid with connecting arrows */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch relative">
+                {circularSteps.map((step, idx) => (
+                  <div key={step.id} className="relative flex flex-col">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      transition={{ duration: 0.5, delay: idx * 0.1 }}
+                      className="h-full bg-emerald-900/30 border border-emerald-700/40 hover:border-emerald-500/60 transition-colors rounded-2xl p-6 sm:p-7 text-center backdrop-blur-sm flex flex-col items-center justify-start min-h-[220px]"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-emerald-800/80 text-emerald-300 flex items-center justify-center mb-5 shrink-0 shadow-inner">
+                        {step.icon}
+                      </div>
+                      <h3 className="text-base sm:text-lg font-bold text-white mb-2.5">
+                        {step.title}
+                      </h3>
+                      <p className="text-stone-300 text-xs sm:text-sm leading-relaxed">
+                        {step.description}
+                      </p>
+                    </motion.div>
+
+                    {/* Arrow between cards on desktop */}
+                    {idx < circularSteps.length - 1 && (
+                      <div className="hidden lg:flex absolute -right-3.5 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-emerald-950/80 border border-emerald-700/50 items-center justify-center text-emerald-400 pointer-events-none">
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </section>
 
         {/* Market Section */}
         <motion.section 
@@ -345,8 +473,6 @@ export default function Page() {
                 </p>
                 <ul className="space-y-4">
                   {[
-                    "Ultra-fast-growing, high-yield renewable alternative",
-                    "Local cultivation reducing import reliance",
                     "Focus on fuel-poor, off-grid communities",
                     "Circular forestry model without deforestation",
                     "Agroforestry partnerships for farmer income"
@@ -362,63 +488,61 @@ export default function Page() {
           </div>
         </motion.section>
 
-        {/* Team Section */}
+        {/* Founder Section */}
         <motion.section 
+          id="founder"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="py-24 bg-white"
+          className="py-24 bg-stone-50"
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-6">Our Team</h2>
-            <p className="text-lg text-stone-600 max-w-2xl mx-auto mb-16">
-              Presently, we are a dedicated team of 3 driving Ecotherm Agrotech forward from its idea stage through rigorous market and policy research.
-            </p>
-            
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="bg-stone-50 p-8 rounded-3xl border border-stone-100"
-              >
-                <div className="w-24 h-24 bg-stone-200 rounded-full mx-auto mb-6 overflow-hidden">
-                  <Image src="https://picsum.photos/seed/founder/200/200" alt="Aamir Latief Wani" width={96} height={96} className="object-cover" referrerPolicy="no-referrer" />
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-white rounded-3xl p-6 sm:p-10 lg:p-12 border border-stone-200/80 shadow-xl shadow-stone-200/50">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                {/* Left Portrait / Image */}
+                <div className="lg:col-span-5 relative w-full h-[400px] sm:h-[480px] lg:h-[520px] rounded-2xl overflow-hidden shadow-md">
+                  <Image
+                    src="https://picsum.photos/seed/kashmir-coastal/800/1000"
+                    alt="Ar. Aamir Latief Wani - Founder & Principal Architect"
+                    fill
+                    className="object-cover"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
-                <h3 className="text-xl font-bold text-stone-900 mb-1">Aamir Latief Wani</h3>
-                <p className="text-emerald-600 font-medium mb-4">Founder</p>
-                <p className="text-sm text-stone-500">Conducted extensive fieldwork and public building documentation in Edinburgh.</p>
-              </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="bg-stone-50 p-8 rounded-3xl border border-stone-100"
-              >
-                <div className="w-24 h-24 bg-stone-200 rounded-full mx-auto mb-6 overflow-hidden">
-                  <Image src="https://picsum.photos/seed/researcher1/200/200" alt="Zarnain Manzoor" width={96} height={96} className="object-cover" referrerPolicy="no-referrer" />
+
+                {/* Right Bio & Info */}
+                <div className="lg:col-span-7 flex flex-col justify-center">
+                  <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <span className="text-xs sm:text-sm font-bold tracking-[0.2em] text-emerald-700 uppercase">
+                      Founder &amp; Principal Architect
+                    </span>
+                    <a 
+                      href="https://www.linkedin.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-stone-600 hover:text-emerald-700 transition-colors group"
+                    >
+                      <Linkedin className="h-4 w-4 text-emerald-700 group-hover:scale-110 transition-transform" />
+                      <span>LinkedIn Profile</span>
+                    </a>
+                  </div>
+
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-stone-900 font-normal tracking-tight">
+                    Ar. Aamir Latief Wani
+                  </h2>
+                  <div className="w-16 h-1 bg-emerald-500 rounded-full mt-3 mb-6" />
+
+                  <p className="text-stone-600 text-base sm:text-lg leading-relaxed mb-8">
+                    An Edinburgh-based conservation architect, Aamir works on sustainable approaches to preserving heritage structures while making them energy efficient. He designs retrofitting strategies using wood pellets as a green, net-zero carbon emission fuel. Founder of Ecotherm Agritech (Converge Initiative Top 6, 2024–25) and DesArt Studios (Kashmir, 2018), he advocates for energy literacy and the revival of vernacular earthquake-resistant systems like Dhajji Dewari.
+                  </p>
+
+                  <div className="flex items-center gap-2.5 text-stone-700 text-sm sm:text-base font-medium">
+                    <MapPin className="h-5 w-5 text-emerald-600 shrink-0" />
+                    <span>Kashmir, India / Edinburgh, UK</span>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-stone-900 mb-1">Zarnain Manzoor</h3>
-                <p className="text-emerald-600 font-medium mb-4">Research Lead</p>
-                <p className="text-sm text-stone-500">Expertise in bio-energy policy and market competitor analysis.</p>
-              </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="bg-stone-50 p-8 rounded-3xl border border-stone-100"
-              >
-                <div className="w-24 h-24 bg-stone-200 rounded-full mx-auto mb-6 overflow-hidden">
-                  <Image src="https://picsum.photos/seed/researcher2/200/200" alt="Plant Physiologist" width={96} height={96} className="object-cover" referrerPolicy="no-referrer" />
-                </div>
-                <h3 className="text-xl font-bold text-stone-900 mb-1">Faiza Lateef Wani</h3>
-                <p className="text-emerald-600 font-medium mb-4">Scientific Lead</p>
-                <p className="text-sm text-stone-500">Researching the scope, adaptability, and advantage of our bio-crop.</p>
-              </motion.div>
+              </div>
             </div>
           </div>
         </motion.section>
@@ -440,7 +564,7 @@ export default function Page() {
                 />
               </div>
               <p className="mb-6 max-w-md leading-relaxed text-stone-400">
-                An Edinburgh-based social enterprise producing sustainable wooden pellets from bio crops to support Scotland&apos;s growing energy requirements.
+                A Scotland-based social venture producing sustainable wooden pellets from existing wood waste to support Scotland&apos;s growing energy requirements.
               </p>
             </div>
             <div>
@@ -455,10 +579,10 @@ export default function Page() {
             <div>
               <h4 className="text-white font-bold mb-4">Contact</h4>
               <ul className="space-y-2">
-                <li>Edinburgh, Scotland</li>
-                <li>contact@ecothermagrotech.com</li>
-                <li><a href="tel:+447880226165" className="hover:text-emerald-400 transition-colors flex items-center gap-2"><Phone className="h-4 w-4" /> +44 7880 226165</a></li>
-                <li><a href="https://wa.me/447880226165" className="hover:text-emerald-400 transition-colors flex items-center gap-2"><MessageCircle className="h-4 w-4" /> +44 7880 226165</a></li>
+                <li>Inverness, Scotland</li>
+                <li><a href="mailto:ecothermagrotech@gmail.com" className="hover:text-emerald-400 transition-colors">ecothermagrotech@gmail.com</a></li>
+                <li><a href="tel:+447828643650" className="hover:text-emerald-400 transition-colors flex items-center gap-2"><Phone className="h-4 w-4" /> +44 7828 643650</a></li>
+                <li><a href="https://wa.me/447828643650" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors flex items-center gap-2"><MessageCircle className="h-4 w-4" /> +44 7828 643650</a></li>
               </ul>
             </div>
           </div>
@@ -471,18 +595,94 @@ export default function Page() {
             
             <div className="mt-8 md:mt-0 flex items-center justify-center md:justify-end gap-3 group/credits">
               <span className="text-white font-bold text-xs tracking-[0.15em] uppercase">Designed By</span>
-              <a href="https://codefons.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 px-4 py-2 bg-stone-800/60 border border-stone-700/50 rounded-full hover:bg-stone-800 hover:border-orange-500/40 hover:shadow-[0_0_12px_rgba(249,115,22,0.15)] transition-all duration-300 cursor-pointer group/cf no-underline">
-                <div className="w-6 h-6 bg-orange-500 rounded-[5px] flex items-center justify-center transform group-hover/cf:rotate-12 transition-transform duration-300">
-                  <span className="text-white font-bold text-[10px] leading-none">&lt;/&gt;</span>
-                </div>
-                <span className="font-bold text-sm tracking-tight transition-colors duration-300">
-                  <span className="text-stone-400 group-hover/cf:text-white transition-colors duration-300">Code</span><span className="text-orange-500">FONS</span>
-                </span>
+              <a 
+                href="https://www.blumargins.com/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-2.5 px-3.5 py-1.5 bg-stone-800/80 border border-stone-700/60 rounded-full hover:bg-stone-800 hover:border-blue-500/50 hover:shadow-[0_0_12px_rgba(59,130,246,0.2)] transition-all duration-300 cursor-pointer group/bm no-underline"
+              >
+                <Image
+                  src="/images/blumargins.png"
+                  alt="BluMargins Logo"
+                  width={111}
+                  height={32}
+                  className="h-6 w-auto object-contain group-hover/bm:brightness-110 transition-all duration-300"
+                />
               </a>
             </div>
           </div>
         </div>
       </footer>
+
+      {/* Sustainable Solution Modal */}
+      <AnimatePresence>
+        {selectedSolution && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedSolution(null)}
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-100 my-8"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedSolution(null)}
+                className="absolute top-5 right-5 p-2 text-stone-400 hover:text-stone-700 rounded-full hover:bg-stone-100 transition-colors cursor-pointer"
+                aria-label="Close details"
+              >
+                <X className="h-5 w-5" />
+              </button>
+
+              {/* Icon */}
+              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-5 border border-emerald-100">
+                {selectedSolution.icon}
+              </div>
+
+              {/* Title */}
+              <h3 className="text-2xl sm:text-3xl font-serif text-stone-900 font-normal tracking-tight mb-3">
+                {selectedSolution.title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-stone-600 text-sm sm:text-base leading-relaxed mb-6">
+                {selectedSolution.description}
+              </p>
+
+              {/* Features List */}
+              <div className="bg-stone-50 rounded-2xl p-5 border border-stone-100 mb-6">
+                <div className="flex items-center gap-2 text-xs font-bold tracking-[0.15em] text-emerald-700 uppercase mb-3.5">
+                  <CheckCircle2 className="h-4 w-4" />
+                  <span>PRODUCT FEATURES</span>
+                </div>
+                <ul className="space-y-2.5">
+                  {selectedSolution.allFeatures.map((feat, idx) => (
+                    <li key={idx} className="flex items-center gap-2.5 text-xs sm:text-sm text-stone-700">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                      <span>{feat}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Close Action Button */}
+              <button
+                onClick={() => setSelectedSolution(null)}
+                className="w-full py-3.5 px-6 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white font-medium text-sm transition-colors text-center shadow-md cursor-pointer"
+              >
+                Close Details
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
