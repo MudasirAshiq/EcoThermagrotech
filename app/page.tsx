@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Leaf, Flame, TreePine, Droplets, Sun, Recycle, Users, Sprout, ShieldCheck, Factory, Home, Landmark, Zap, Cloud, Timer, Phone, MessageCircle, MapPin, Linkedin, CheckCircle2, X, Package, Box, Layers, ArrowRight, Quote } from 'lucide-react';
+import { Leaf, Flame, TreePine, Droplets, Sun, Recycle, Users, Sprout, Factory, Home, Landmark, Zap, Cloud, Timer, Phone, MessageCircle, MapPin, Linkedin, CheckCircle2, X, Package, Box, Layers, ArrowRight, Quote } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
@@ -466,23 +466,21 @@ export default function Page() {
                 </div>
               </div>
               
-              <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-stone-200">
-                <h3 className="text-2xl font-bold text-stone-900 mb-6">Our Competitive Edge</h3>
-                <p className="text-stone-600 mb-8">
-                  Unlike competitors (Balcas Energy, Land Energy, UPM Biofuels) who rely on slow-growing traditional forestry or imported biomass, we offer:
-                </p>
-                <ul className="space-y-4">
-                  {[
-                    "Focus on fuel-poor, off-grid communities",
-                    "Circular forestry model without deforestation",
-                    "Agroforestry partnerships for farmer income"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <ShieldCheck className="h-6 w-6 text-emerald-600 shrink-0" />
-                      <span className="text-stone-800 font-medium">{item}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="relative w-full h-[460px] sm:h-[520px] lg:h-[560px] rounded-3xl overflow-hidden shadow-xl border border-stone-200 group">
+                <Image
+                  src="/images/wood-pellets-market.jpg"
+                  alt="High-density wooden biomass pellets for clean Scottish heating"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 bg-gradient-to-t from-stone-950/80 via-stone-950/40 to-transparent text-white">
+                  <span className="inline-block px-3 py-1 rounded-full bg-emerald-600/90 text-xs font-semibold tracking-wider uppercase mb-2">
+                    Clean Energy Biomass
+                  </span>
+                  <p className="text-sm sm:text-base font-medium text-stone-100 leading-snug">
+                    High-efficiency wooden pellets powering homes &amp; industries across Scotland
+                  </p>
+                </div>
               </div>
             </div>
           </div>
