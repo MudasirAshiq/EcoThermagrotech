@@ -501,13 +501,12 @@ export default function Page() {
             <div className="bg-white rounded-3xl p-6 sm:p-10 lg:p-12 border border-stone-200/80 shadow-xl shadow-stone-200/50">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                 {/* Left Portrait / Image */}
-                <div className="lg:col-span-5 relative w-full h-[400px] sm:h-[480px] lg:h-[520px] rounded-2xl overflow-hidden shadow-md">
+                <div className="lg:col-span-5 relative w-full h-[380px] sm:h-[440px] lg:h-[480px] rounded-2xl overflow-hidden shadow-md">
                   <Image
-                    src="https://picsum.photos/seed/kashmir-coastal/800/1000"
+                    src="/images/founder.jpg"
                     alt="Ar. Aamir Latief Wani - Founder & Principal Architect"
                     fill
-                    className="object-cover"
-                    referrerPolicy="no-referrer"
+                    className="object-cover object-top"
                   />
                 </div>
 
